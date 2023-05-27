@@ -9,6 +9,7 @@ const ffmpeg = await FFmpeg.create({
 });
 
 ffmpeg.fs.writeFile("flame.avi", await readFile(join(assetsDir, "flame.avi")));
+
 await ffmpeg.run([
   "-i",
   "flame.avi",
@@ -18,6 +19,7 @@ await ffmpeg.run([
   "hstack",
   "flame.mp4",
 ]);
+
 await writeFile(join(outDir, "flame.mp4"), ffmpeg.fs.readFile("flame.mp4"));
 
 await ffmpeg.exit("kill");

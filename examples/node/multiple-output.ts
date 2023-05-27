@@ -9,6 +9,7 @@ const ffmpeg = await FFmpeg.create({
 });
 
 ffmpeg.fs.writeFile("flame.avi", await readFile(join(assetsDir, "flame.avi")));
+
 await ffmpeg.run([
   "-i",
   "flame.avi",
@@ -18,6 +19,7 @@ await ffmpeg.run([
   "25",
   "out_%06d.bmp",
 ]);
+
 await Promise.all(
   ffmpeg.fs
     .readdir("/")
