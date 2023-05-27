@@ -24,7 +24,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "pnpm run \"/^build:.*/\"",
+    "build:main": "tsup",
+    "build:example": "tsup --config examples/tsup.config.ts",
     "lint": "pnpm run \"/^lint:.*/\"",
     "lint:eslint": "eslint --ext .ts --fix ./src",
     "lint:prettier": "prettier --write .",
@@ -55,6 +57,7 @@
     "eslint": "^8.40.0",
     "eslint-config-prettier": "^8.8.0",
     "express": "^4.18.2",
+    "file-type": "^18.4.0",
     "husky": "^8.0.3",
     "nano-staged": "^0.8.0",
     "prettier": "^2.8.8",

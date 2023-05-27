@@ -4,20 +4,24 @@ import FFmpeg from "../src";
 describe("create", () => {
   test("construct with core path string", () =>
     FFmpeg.create({ core: "@ffmpeg.wasm/core-mt" }));
+
   test("construct with core factory function", async () => {
     const core = (await import("@ffmpeg.wasm/core-mt")).default;
     await FFmpeg.create({ core });
   });
+
   test("construct with invaild core (expect error)", () =>
     expect(async () =>
       //@ts-expect-error intentional behaviour
       FFmpeg.create({ core: 1 })
     ).rejects.toThrowError());
+
   test("construct with core undefined (expect error)", () =>
     expect(async () =>
       //@ts-expect-error intentional behaviour
       FFmpeg.create({ core: undefined })
     ).rejects.toThrowError());
+
   test("construct with operator `new` (expect error)", () =>
     expect(
       () =>
