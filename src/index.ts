@@ -13,8 +13,7 @@ import type {
   FFmpegFlags,
   FFmpegVersion,
 } from "./types";
-import { logError, parseVersion, writeArgs } from "./utils";
-import { importCore } from "./utils/importCore";
+import { importCore, logError, parseVersion, writeArgs } from "./utils";
 
 // arguments to get version
 const VERSION_ARGS = ["ffmpeg", "-version"];
