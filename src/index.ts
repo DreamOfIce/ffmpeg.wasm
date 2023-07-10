@@ -241,3 +241,4 @@ type FFmpegExecAsyncWrapper = FFmpeg["exec"];
 
 export default FFmpeg;
 export type { FFmpegExecWrapper, FFmpegExecAsyncWrapper };
+export * from "./utils";
