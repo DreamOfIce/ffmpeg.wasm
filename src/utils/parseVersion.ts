@@ -6,8 +6,8 @@ const libsRegExp = /^\s*(\w+)\s*(\d+)\.\s*(\d+)\.\s*(\d+)\s*\/.*$/gm;
 
 export function parseVersion(output: string): FFmpegCoreVersion {
   return {
-    version: output.match(coreVersionRegExp)?.[0] ?? "unknown",
-    configuration: output.match(configurationRegExp)?.[0] ?? "",
+    version: output.match(coreVersionRegExp)?.[1] ?? "unknown",
+    configuration: output.match(configurationRegExp)?.[1] ?? "",
     libs: Object.fromEntries(
       [...output.matchAll(libsRegExp)].map(([, name, major, minor, patch]) => [
         name as string,
