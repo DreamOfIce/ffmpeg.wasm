@@ -87,6 +87,13 @@ class FFmpeg {
     _options: FFmpegInitOptions = {}
   ): Promise<FFmpeg> {
     const options = { ...defaultInitOptions, ..._options };
+    options.coreOptions.locateFile ??= (url, prefix) => {
+      return options.coreOptions.wasmPath && url.endsWith(".wasm")
+        ? options.coreOptions.wasmPath
+        : options.coreOptions.workerPath && url.endsWith(".js")
+        ? options.coreOptions.workerPath
+        : `${prefix}${url}`;
+    };
 
     // used to get version info
     const { log, logger } = options;
@@ -101,6 +108,7 @@ class FFmpeg {
       await importCore(options.core, logger)
     )({
       arguments: VERSION_ARGS,
+      locateFile: options.coreOptions.locateFile,
       noExitRuntime: true,
       print(msg) {
         if (options.log) options.logger("info", msg);

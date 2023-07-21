@@ -7,6 +7,11 @@ type FFmpegLogger = (
 
 interface FFmpegInitOptions {
   core?: string | FFmpegCoreConstructor;
+  coreOptions?: {
+    locateFile?: EmscriptenModule["locateFile"];
+    wasmPath?: string;
+    workerPath?: string;
+  };
   defaultArgs?: string[];
   log?: boolean;
   logger?: FFmpegLogger;
@@ -14,10 +19,12 @@ interface FFmpegInitOptions {
 
 const defaultInitOptions: Required<FFmpegInitOptions> = {
   core: "@ffmpeg.wasm/core-mt",
+  coreOptions: {},
   defaultArgs: ["-nostdin", "-y", "-hide_banner"],
   log: false,
   logger: (level, ...msg) =>
-    (level === "debug" && process?.env?.["NODE_ENV"] === "development") ||
+    level !== "debug" &&
+    process?.env?.["NODE_ENV"] === "development" &&
     console[level](`[${level}] `, ...msg),
 };
 
