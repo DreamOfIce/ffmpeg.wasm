@@ -62,7 +62,7 @@ class FFmpeg {
     coreVersion: FFmpegCoreVersion
   ) {
     this.core = core;
-    this.options = { ...defaultInitOptions, ...options };
+    this.options = options;
     this.version = { main: version, core: coreVersion };
     const { simd, thread, wasi } = core;
     this.flags = { simd, thread, wasi };
@@ -93,12 +93,12 @@ class FFmpeg {
     let output = "";
     options.log = true;
     options.logger = (level, msg) => {
-      if (level === "info") output += msg;
+      if (level === "info") output += `${String(msg)}\n`;
     };
 
     // import and create core
     const core = await (
-      await importCore(options.core, options.logger)
+      await importCore(options.core, logger)
     )({
       arguments: VERSION_ARGS,
       noExitRuntime: true,

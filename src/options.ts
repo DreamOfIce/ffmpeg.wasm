@@ -1,7 +1,7 @@
 import type { FFmpegCoreConstructor } from "./types";
 
 type FFmpegLogger = (
-  level: "info" | "warn" | "error",
+  level: "debug" | "info" | "warn" | "error",
   ...msg: unknown[]
 ) => void;
 
@@ -16,7 +16,9 @@ const defaultInitOptions: Required<FFmpegInitOptions> = {
   core: "@ffmpeg.wasm/core-mt",
   defaultArgs: ["-nostdin", "-y", "-hide_banner"],
   log: false,
-  logger: (level, ...msg) => console[level](`[${level}] `, ...msg),
+  logger: (level, ...msg) =>
+    (level === "debug" && process?.env?.["NODE_ENV"] === "development") ||
+    console[level](`[${level}] `, ...msg),
 };
 
 interface FFmpegRunningOptions {
