@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 overrides:
   ts-node: npm:@dreamofice/ts-node@^10.9.2
 
@@ -17,11 +21,11 @@ devDependencies:
     specifier: ^17.6.6
     version: 17.6.6
   '@ffmpeg.wasm/core-mt':
-    specifier: link:../ffmpeg.wasm-core/packages/core-mt
-    version: link:../ffmpeg.wasm-core/packages/core-mt
+    specifier: ^0.12.0
+    version: 0.12.0
   '@ffmpeg.wasm/core-st':
-    specifier: link:../ffmpeg.wasm-core/packages/core-st
-    version: link:../ffmpeg.wasm-core/packages/core-st
+    specifier: ^0.12.0
+    version: 0.12.0
   '@release-it/conventional-changelog':
     specifier: ^5.1.1
     version: 5.1.1(release-it@15.11.0)
@@ -1759,6 +1763,14 @@ packages:
   /@eslint/js@8.43.0:
     resolution: {integrity: sha512-s2UHCoiXfxMvmfzqoN+vrQ84ahUSYde9qNO1MdxmoEhyHWsfmwOpFlwYV+ePJEVc7gFnATGUi376WowX1N7tFg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dev: true
+
+  /@ffmpeg.wasm/core-mt@0.12.0:
+    resolution: {integrity: sha512-M9pjL7JQX4AYl3WI8vGcPGPTz/O7JmhW8ac/fHA3oXTxoRAPwYSY/OsY1N9C0XahIM0+fxa1QSLN9Ekz8sBM/Q==}
+    dev: true
+
+  /@ffmpeg.wasm/core-st@0.12.0:
+    resolution: {integrity: sha512-9MGqNa6HlLORu4QfWYmybZ4jhiC31xMcpXxQlM/7Bx/BxDJBIwn6HbnPyPruKih3JTdFgb4UC0QIQhDdIWkWbA==}
     dev: true
 
   /@humanwhocodes/config-array@0.11.10:

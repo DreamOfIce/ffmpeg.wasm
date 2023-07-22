@@ -7,13 +7,13 @@
     "WebAssembly",
     "video"
   ],
-  "homepage": "https://github.com/DreamOfIce/ffmpeg.wasm#readme",
+  "homepage": "https://github.com/ffmpeg.wasm/ffmpeg.wasm#readme",
   "bugs": {
-    "url": "https://github.com/DreamOfIce/ffmpeg.wasm/issues"
+    "url": "https://github.com/ffmpeg.wasm/ffmpeg.wasm/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DreamOfIce/ffmpeg.wasm.git"
+    "url": "git+https://github.com/ffmpeg.wasm/ffmpeg.wasm.git"
   },
   "license": "MIT",
   "author": "Jerome Wu <jeromewus@gmail.com>",
@@ -39,8 +39,8 @@
     "@babel/preset-env": "^7.22.5",
     "@commitlint/cli": "^17.6.6",
     "@commitlint/config-conventional": "^17.6.6",
-    "@ffmpeg.wasm/core-mt": "link:../ffmpeg.wasm-core/packages/core-mt",
-    "@ffmpeg.wasm/core-st": "link:../ffmpeg.wasm-core/packages/core-st",
+    "@ffmpeg.wasm/core-mt": "^0.12.0",
+    "@ffmpeg.wasm/core-st": "^0.12.0",
     "@release-it/conventional-changelog": "^5.1.1",
     "@swc/core": "^1.3.66",
     "@tsconfig/esm": "^1.0.3",
