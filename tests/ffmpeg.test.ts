@@ -1,4 +1,5 @@
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
+import { version } from "../package.json";
 import FFmpeg from "../src";
 
 describe("create", () => {
@@ -28,6 +29,40 @@ describe("create", () => {
         //@ts-expect-error intentional behaviour
         void new FFmpeg()
     ).toThrowError());
+});
+
+describe("basic", () => {
+  test("version", async () => {
+    const ffmpeg = await FFmpeg.create({
+      core: "@ffmpeg.wasm/core-mt",
+    });
+    expect(ffmpeg.version).toBeTypeOf("object");
+    expect(ffmpeg.version.main).toBe(version);
+    expect(ffmpeg.version.core.configuration).not.toBe("");
+  });
+
+  test("exit", async () => {
+    const ffmpeg = await FFmpeg.create({
+      core: "@ffmpeg.wasm/core-mt",
+    });
+    expect(ffmpeg.exited).toBe(false);
+    await ffmpeg.exit("kill");
+    expect(ffmpeg.exited).toBe(true);
+  });
+
+  test("log", async () => {
+    const ffmpeg = await FFmpeg.create({
+      core: "@ffmpeg.wasm/core-mt",
+      log: false,
+    });
+    const logger = vi.fn().mockName("logger");
+    ffmpeg.setLogger(logger);
+    await ffmpeg.run(["-version"]);
+    expect(logger).not.toHaveBeenCalled();
+    ffmpeg.setLogging(true);
+    await ffmpeg.run(["-version"]);
+    expect(logger).toHaveBeenCalled();
+  });
 });
 
 describe("flags", () => {
