@@ -1,6 +1,6 @@
 <p align="center">
   <a href="#">
-    <img alt="ffmpeg.wasm" width="128px" height="128px" src="https://github.com/DreamOfIce/ffmpeg.wasm/raw/master/docs/images/ffmpegwasm-icon.png">
+    <img alt="ffmpeg.wasm" width="128px" height="128px" src="https://github.com/ffmpeg.wasm/ffmpeg.wasm/raw/master/docs/images/ffmpegwasm-icon.png">
   </a>
 </p>
 
@@ -8,10 +8,10 @@
 
 [![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)](https://github.com/emersion/stability-badges#experimental)
 [![Node Version](https://img.shields.io/node/v/@ffmpeg.wasm/main.svg)](https://img.shields.io/node/v/@ffmpeg.wasm/main.svg)
-[![Actions Status](https://github.com/DreamOfIce/ffmpeg.wasm/workflows/CI/badge.svg)](https://github.com/DreamOfIce/ffmpeg.wasm/actions)
-![CodeQL](https://github.com/DreamOfIce/ffmpeg.wasm/workflows/CodeQL/badge.svg)
+[![Actions Status](https://github.com/ffmpeg.wasm/ffmpeg.wasm/workflows/CI/badge.svg)](https://github.com/ffmpeg.wasm/ffmpeg.wasm/actions)
+![CodeQL](https://github.com/ffmpeg.wasm/ffmpeg.wasm/workflows/CodeQL/badge.svg)
 ![npm (tag)](https://img.shields.io/npm/v/@ffmpeg.wasm/main/latest)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/DreamOfIce/ffmpeg.wasm/graphs/commit-activity)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/ffmpeg.wasm/ffmpeg.wasm/graphs/commit-activity)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code Style](https://badgen.net/badge/code%20style/airbnb/ff5a5f?icon=airbnb)](https://github.com/airbnb/javascript)
 [![Downloads Total](https://img.shields.io/npm/dt/@ffmpeg.wasm/main.svg)](https://www.npmjs.com/package/@ffmpeg.wasm/main)
@@ -45,11 +45,11 @@ Hopefully these changes can be merged into ffmpegwasm in the future
 - [x] Update emsdk to latest
 - [x] Release with Github Action
 - [x] Migrate to pnpm
-- [x] ESM Support (WIP)
-- [x] Test with `vitest`(WIP)
-- [ ] Update deps(WIP)
-- [ ] Rewrite with TypeScript (WIP)
-- [ ] Support for parallel tasks in multi-threaded mode(WIP)
+- [x] ESM Support
+- [x] Test with `vitest`
+- [x] Update deps
+- [x] Rewrite with TypeScript
+- [x] Support for parallel tasks in multi-threaded mode
 - [ ] Support build cache
 - [ ] Migrate to monorepo
 - [ ] Upgrade to FFmpeg@6
@@ -63,13 +63,13 @@ ffmpeg.wasm is a pure Webassembly / Javascript port of FFmpeg. It enables video 
 
 <p align="center">
   <a href="#">
-    <img alt="transcode-demo" src="https://github.com/DreamOfIce/ffmpeg.wasm/raw/master/docs/images/transcode.gif">
+    <img alt="transcode-demo" src="https://github.com/ffmpeg.wasm/ffmpeg.wasm/raw/master/docs/images/transcode.gif">
   </a>
 </p>
 
 Try it: [https://ffmpegwasm.netlify.app](https://ffmpegwasm.netlify.app#demo)
 
-Check next steps of ffmpeg.wasm [HERE](https://github.com/DreamOfIce/ffmpeg.wasm/discussions/415)
+Check next steps of ffmpeg.wasm [HERE](https://github.com/ffmpeg.wasm/ffmpeg.wasm/discussions/415)
 
 ## Installation
 
@@ -147,7 +147,7 @@ const ffmpeg = await FFmpeg.create({
 });
 ```
 
-For the list available versions and their changelog, please check: https://github.com/DreamOfIce/ffmpeg.wasm-core/releases
+For the list available versions and their changelog, please check: https://github.com/ffmpeg.wasm/ffmpeg.wasm-core/releases
 
 ### Use single thread version
 
@@ -171,8 +171,8 @@ Need to pass `-row-mt 1`, but can only use one thread to help, can speed up arou
 
 ## Documentation
 
-- [API](https://github.com/DreamOfIce/ffmpeg.wasm/blob/master/docs/api.md)
-- [Supported External Libraries](https://github.com/DreamOfIce/ffmpeg.wasm-core#configuration)
+- [API](https://github.com/ffmpeg.wasm/ffmpeg.wasm/blob/master/docs/api.md)
+- [Supported External Libraries](https://github.com/ffmpeg.wasm/ffmpeg.wasm-core#configuration)
 
 ## FAQ
 
@@ -180,8 +180,8 @@ Need to pass `-row-mt 1`, but can only use one thread to help, can speed up arou
 
 There are two components inside ffmpeg.wasm:
 
-- @ffmpeg.wasm/main (https://github.com/DreamOfIce/ffmpeg.wasm)
-- @ffmpeg.wasm/core-mt (https://github.com/DreamOfIce/ffmpeg.wasm-core)
+- @ffmpeg.wasm/main (https://github.com/ffmpeg.wasm/ffmpeg.wasm)
+- @ffmpeg.wasm/core-mt (https://github.com/ffmpeg.wasm/ffmpeg.wasm-core)
 
 @ffmpeg.wasm/core-mt contains WebAssembly code which is transpiled from original FFmpeg C code with minor modifications, but overall it still following the same licenses as FFmpeg and its external libraries (as each external libraries might have its own license).
 
@@ -193,7 +193,7 @@ Yes, but only for Firefox 79+ with proper header in both client and server, visi
 
 ![](https://user-images.githubusercontent.com/5723124/98955802-4cb20c80-253a-11eb-8f16-ce0298720a2a.png)
 
-For more details: https://github.com/DreamOfIce/ffmpeg.wasm/issues/106
+For more details: https://github.com/ffmpeg.wasm/ffmpeg.wasm/issues/106
 
 ### What is the maximum size of input file?
 
@@ -203,7 +203,7 @@ For more details: https://github.com/DreamOfIce/ffmpeg.wasm/issues/106
 
 In fact, it is ffmpeg.wasm-core most people would like to build.
 
-To build on your own, you can check build.sh inside https://github.com/DreamOfIce/ffmpeg.wasm-core repository.
+To build on your own, you can check build.sh inside https://github.com/ffmpeg.wasm/ffmpeg.wasm-core repository.
 
 Also you can check this series of posts to learn more fundamental concepts:
 
@@ -211,19 +211,3 @@ Also you can check this series of posts to learn more fundamental concepts:
 - https://jeromewu.github.io/build-ffmpeg-webassembly-version-part-2-compile-with-emscripten/
 - https://jeromewu.github.io/build-ffmpeg-webassembly-version-part-3-v0.1/
 - https://jeromewu.github.io/build-ffmpeg-webassembly-version-part-4-v0.2/
-
-### Why it doesn't work in my local environment?
-
-When calling `ffmpeg.load()`, by default it looks for `http://localhost:3000/node_modules/@ffmpeg.wasm/core-mt/dist/` to download essential files (ffmpeg-core.js, ffmpeg-core.wasm, ffmpeg-core.worker.js). It is necessary to make sure you have those files served there.
-
-If you have those files serving in other location, you can rewrite the default behavior when calling `createFFmpeg()`:
-
-```javascript
-const { createFFmpeg } = FFmpeg;
-const ffmpeg = createFFmpeg({
-  corePath: "http://localhost:3000/public/ffmpeg-core.js",
-  // Use public address if you don't want to host your own.
-  // corePath: 'https://unpkg.com/@ffmpeg.wasm/core-mt@0.10.0/dist/ffmpeg-core.js'
-  log: true,
-});
-```
