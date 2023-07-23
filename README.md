@@ -1,10 +1,10 @@
 <p align="center">
   <a href="#">
-    <img alt="ffmpeg.wasm" width="128px" height="128px" src="https://github.com/ffmpeg.wasm/ffmpeg.wasm/raw/master/docs/images/ffmpegwasm-icon.png">
+    <img alt="ffmpeg.wasm" width="128px" height="128px" src="./docs/images/ffmpegwasm-icon.png">
   </a>
 </p>
 
-# ffmpeg.wasm
+# FFmpeg.wasm
 
 [![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)](https://github.com/emersion/stability-badges#experimental)
 [![Node Version](https://img.shields.io/node/v/@ffmpeg.wasm/main.svg)](https://img.shields.io/node/v/@ffmpeg.wasm/main.svg)
@@ -37,7 +37,6 @@ Hopefully these changes can be merged into ffmpegwasm in the future
    - `@ffmpeg/ffmpeg` => `@ffmpeg.wasm/main`
    - `@ffmpeg/core` & `@ffmpeg/core-mt` => `@ffmpeg.wasm/core-mt`
    - `@ffmpeg/core-st` => `@ffmpeg.wasm/core-st`
-   - `@ffmpeg/types` is expected to be bundled with `@ffmpeg.wasm/main` in v0.13
 2. Update version to `^0.12.0`
 
 ### Todos
@@ -52,24 +51,13 @@ Hopefully these changes can be merged into ffmpegwasm in the future
 - [x] Support for parallel tasks in multi-threaded mode
 - [ ] Support build cache
 - [ ] Migrate to monorepo
+- [ ] use SMID to speedup converts
 - [ ] Upgrade to FFmpeg@6
 - [ ] Use the faster `libsvtav1` instead of `libaom` (currently disabled because it is too slow)
 
 ## Original readme
 
-ffmpeg.wasm is a pure Webassembly / Javascript port of FFmpeg. It enables video & audio record, convert and stream right inside browsers.
-
-**AVI to MP4 Demo**
-
-<p align="center">
-  <a href="#">
-    <img alt="transcode-demo" src="https://github.com/ffmpeg.wasm/ffmpeg.wasm/raw/master/docs/images/transcode.gif">
-  </a>
-</p>
-
-Try it: [https://ffmpegwasm.netlify.app](https://ffmpegwasm.netlify.app#demo)
-
-Check next steps of ffmpeg.wasm [HERE](https://github.com/ffmpeg.wasm/ffmpeg.wasm/discussions/415)
+ffmpeg.wasm is a pure Webassembly port of FFmpeg. It enables video & audio record, convert and stream right inside browsers.
 
 ## Installation
 
@@ -83,12 +71,12 @@ $ npm install @ffmpeg.wasm/main @ffmpeg.wasm/core-mt
 
 Or, using a script tag in the browser (only works in some browsers, see list below):
 
-> `SharedArrayBuffer` is only available to pages that are [cross-origin isolated](https://developer.chrome.com/blog/enabling-shared-array-buffer/#cross-origin-isolation). You need to send headers `Cross-Origin-Embedder-Policy: require-corp` and `Cross-Origin-Opener-Policy: same-origin` for your site, and make sure your static resource server contains the header `Cross-Origin- Resource-Policy: cross-origin`(e.g. [jsdelivr](https://jsdelivr.com), not [unpkg](https://unpkg.com))
+> `SharedArrayBuffer` is only available to pages that are [cross-origin isolated](https://developer.chrome.com/blog/enabling-shared-array-buffer/#cross-origin-isolation). You need to send headers `Cross-Origin-Embedder-Policy: require-corp` and `Cross-Origin-Opener-Policy: same-origin` for your site, and make sure your static resource server(or public CDN) contains the header `Cross-Origin- Resource-Policy: cross-origin`(e.g. [jsdelivr](https://jsdelivr.com), not [unpkg](https://unpkg.com))
 
 ```html
-<script src="static/js/ffmpeg.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@ffmpeg.wasm/main/dist/index.global.js"></script>
 <script>
-  const { createFFmpeg } = FFmpeg;
+  const { create } = FFmpeg;
   ...
 </script>
 ```
@@ -100,12 +88,12 @@ Or, using a script tag in the browser (only works in some browsers, see list bel
 `ffmpeg.wasm` provides simple to use APIs, to transcode a video you only need few lines of code:
 
 ```ts
-import { writeFile } from "fs/promises";
-import FFmpeg from "@ffmpeg.wasm/main";
+import { readFile, writeFile } from "fs/promises";
+import { FFmpeg } from "@ffmpeg.wasm/main";
 
-const ffmpeg = await FFmpeg({ log: true });
+const ffmpeg = await FFmpeg.create({ core: "@ffmpeg.wasm/core-mt" });
 
-ffmpeg.fs.writeFile("test.avi", await fetchFile("./test.avi"));
+ffmpeg.fs.writeFile("test.avi", await readFile("./test.avi"));
 await ffmpeg.run("-i", "test.avi", "test.mp4");
 await writeFile("./test.mp4", ffmpeg.fs.readFile("test.mp4"));
 process.exit(0);
@@ -113,21 +101,21 @@ process.exit(0);
 
 ### Use other version of ffmpeg.wasm core
 
-For each version of ffmpeg.wasm, there is a default version of `@ffmpeg.wasm/core-mt` (you can find it in **devDependencies** section of [package.json](./package.json)), but sometimes you may need to use newer version of `@ffmpeg.wasm/core-mt` to use the latest/experimental features.
+For each version of ffmpeg.wasm, there is a default version of `@ffmpeg.wasm/core-mt` (you can find it in `devDependencies` section of [package.json](./package.json)), but sometimes you may need to use newer version of `@ffmpeg.wasm/core-mt` to use the latest/experimental features.
 
 **Node**
 
 Just install the specific version you need:
 
 ```sh
-$ npm install @ffmpeg.wasm/core-mt@latest
+$ npm install @ffmpeg.wasm/core-mt
 ```
 
 Or use your own version with customized path
 
 ```ts
 const ffmpeg = await FFmpeg.create({
-  core: "path/to/your/ffmpeg-core.js",
+  core: "path/to/your/ffmpeg.wasm/core.js",
 });
 ```
 
@@ -135,7 +123,7 @@ const ffmpeg = await FFmpeg.create({
 
 ```ts
 const ffmpeg = await FFmpeg.create({
-  core: "static/js/ffmpeg-core.js",
+  core: "https://cdn.jsdelivr.net/npm/@ffmpeg.wasm/core-mt/dist/core.min.js",
 });
 ```
 
@@ -171,7 +159,7 @@ Need to pass `-row-mt 1`, but can only use one thread to help, can speed up arou
 
 ## Documentation
 
-- [API](https://github.com/ffmpeg.wasm/ffmpeg.wasm/blob/master/docs/api.md)
+- [API](./docs/api.md)
 - [Supported External Libraries](https://github.com/ffmpeg.wasm/ffmpeg.wasm-core#configuration)
 
 ## FAQ
@@ -187,27 +175,6 @@ There are two components inside ffmpeg.wasm:
 
 @ffmpeg.wasm/main contains kind of a wrapper to handle the complexity of loading core and calling low-level APIs. It is a small code base and under MIT license.
 
-### Can I use ffmpeg.wasm in Firefox?
-
-Yes, but only for Firefox 79+ with proper header in both client and server, visit https://ffmpegwasm.netlify.app to try whether your Firefox works.
-
-![](https://user-images.githubusercontent.com/5723124/98955802-4cb20c80-253a-11eb-8f16-ce0298720a2a.png)
-
-For more details: https://github.com/ffmpeg.wasm/ffmpeg.wasm/issues/106
-
 ### What is the maximum size of input file?
 
-2 GB, which is a hard limit in WebAssembly. Might become 4 GB in the future.
-
-### How can I build my own ffmpeg.wasm?
-
-In fact, it is ffmpeg.wasm-core most people would like to build.
-
-To build on your own, you can check build.sh inside https://github.com/ffmpeg.wasm/ffmpeg.wasm-core repository.
-
-Also you can check this series of posts to learn more fundamental concepts:
-
-- https://jeromewu.github.io/build-ffmpeg-webassembly-version-part-1-preparation/
-- https://jeromewu.github.io/build-ffmpeg-webassembly-version-part-2-compile-with-emscripten/
-- https://jeromewu.github.io/build-ffmpeg-webassembly-version-part-3-v0.1/
-- https://jeromewu.github.io/build-ffmpeg-webassembly-version-part-4-v0.2/
+1 GB, which is a hard limit in WebAssembly. Might become 4 GB in the future.

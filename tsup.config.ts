@@ -10,7 +10,7 @@ export default defineConfig({
   esbuildOptions: (option) => {
     option.define ??= {};
     option.define["__IS_ESM__"] = String(
-      option.format === "esm" || option.format === "iife"
+      option.format === "esm" || option.format === "iife",
     );
     option.define["__IS_CJS__"] = String(option.format === "cjs");
   },

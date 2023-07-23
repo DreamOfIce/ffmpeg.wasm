@@ -3,7 +3,7 @@ import type { FFmpegCoreConstructor } from "../types";
 
 export const importCore = async (
   core: string | FFmpegCoreConstructor,
-  logger: FFmpegLogger
+  logger: FFmpegLogger,
 ): Promise<FFmpegCoreConstructor> => {
   switch (typeof core) {
     case "string": {
@@ -17,7 +17,7 @@ export const importCore = async (
         return require(core) as FFmpegCoreConstructor;
       } else
         throw new Error(
-          "Neither import nor require exists, please try to import the core manually!"
+          "Neither import nor require exists, please try to import the core manually!",
         );
     }
     case "function":
@@ -25,7 +25,7 @@ export const importCore = async (
       return core;
     default: {
       throw new Error(
-        `Invalid type of option core: ${typeof core}, expect string or function`
+        `Invalid type of option core: ${typeof core}, expect string or function`,
       );
     }
   }

@@ -1,6 +1,6 @@
 import { fileTypeFromBuffer } from "file-type";
 import { expect, test } from "vitest";
-import type FFmpeg from "../../src";
+import type { FFmpeg } from "../../src";
 import type { FFmpegFlags } from "../../src/types";
 
 export interface FFmpegTestCase {
@@ -38,9 +38,9 @@ export const testConvert = (ffmpeg: FFmpeg, testCase: FFmpegTestCase) => {
       await Promise.all(
         testCase.output.map(async ({ path, type }) => {
           expect(
-            (await fileTypeFromBuffer(ffmpeg.fs.readFile(path)))?.mime
+            (await fileTypeFromBuffer(ffmpeg.fs.readFile(path)))?.mime,
           ).toBe(type);
-        })
+        }),
       );
 
       // clear files

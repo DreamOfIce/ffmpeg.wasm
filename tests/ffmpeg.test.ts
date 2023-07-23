@@ -1,6 +1,6 @@
 import { describe, expect, test, vi } from "vitest";
 import { version } from "../package.json";
-import FFmpeg from "../src";
+import { FFmpeg } from "../src";
 
 describe("create", () => {
   test("construct with core path string", () =>
@@ -14,20 +14,20 @@ describe("create", () => {
   test("construct with invaild core (expect error)", () =>
     expect(async () =>
       //@ts-expect-error intentional behaviour
-      FFmpeg.create({ core: 1 })
+      FFmpeg.create({ core: 1 }),
     ).rejects.toThrowError());
 
   test("construct with core undefined (expect error)", () =>
     expect(async () =>
       //@ts-expect-error intentional behaviour
-      FFmpeg.create({ core: undefined })
+      FFmpeg.create({ core: undefined }),
     ).rejects.toThrowError());
 
   test("construct with operator `new` (expect error)", () =>
     expect(
       () =>
         //@ts-expect-error intentional behaviour
-        void new FFmpeg()
+        void new FFmpeg(),
     ).toThrowError());
 });
 

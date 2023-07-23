@@ -11,7 +11,7 @@ interface FFmpegFileSystem extends Interface<typeof FS> {
   mount: (
     type: Emscripten.FileSystemType,
     opts: object,
-    mountpoint: string
+    mountpoint: string,
   ) => void;
   mkdir(path: string, mode?: number): void;
   mkdev(path: string, mode?: number, dev?: number): void;

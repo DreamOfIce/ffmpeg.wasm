@@ -68,7 +68,7 @@ This is the major function in ffmpeg.wasm, you can just imagine it as ffmpeg nat
 
 ```javascript
 (async () => {
-  await ffmpeg.run('-i', 'flame.avi', '-s', '1920x1080', 'output.mp4');
+  await ffmpeg.run("-i", "flame.avi", "-s", "1920x1080", "output.mp4");
   /* equals to `$ ffmpeg -i flame.avi -s 1920x1080 output.mp4` */
 })();
 ```
@@ -170,7 +170,6 @@ Progress handler to get current progress of ffmpeg command.
 **Examples:**
 
 ```javascript
-
 ffmpeg.setProgress(({ ratio }) => {
   console.log(ratio);
   /*
@@ -182,11 +181,11 @@ ffmpeg.setProgress(({ ratio }) => {
 <a name="fetch-file"></a>
 
 ### fetchFile(media): Promise
-   
+
 Helper function for fetching files from various resource.
 
 Sometimes the video/audio file you want to process may located in a remote URL and somewhere in your local file system.
-   
+
 This helper function helps you to fetch to file and return an Uint8Array variable for ffmpeg.wasm to consume.
 
 **Arguments**
@@ -197,7 +196,9 @@ This helper function helps you to fetch to file and return an Uint8Array variabl
 
 ```javascript
 (async () => {
-  const data = await fetchFile('https://github.com/DreamOfIce/testdata/raw/master/video-3s.avi');
+  const data = await fetchFile(
+    "https://github.com/DreamOfIce/testdata/raw/master/video-3s.avi",
+  );
   /*
    * data will be in Uint8Array format
    */

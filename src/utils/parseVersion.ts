@@ -12,7 +12,7 @@ export function parseVersion(output: string): FFmpegCoreVersion {
       [...output.matchAll(libsRegExp)].map(([, name, major, minor, patch]) => [
         name as string,
         `${major as string}.${minor as string}.${patch as string}`,
-      ])
+      ]),
     ),
     raw: output,
   };
