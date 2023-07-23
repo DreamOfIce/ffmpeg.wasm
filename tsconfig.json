@@ -4,7 +4,13 @@
     "@tsconfig/strictest/tsconfig.json",
     "@tsconfig/esm/tsconfig.json"
   ],
-  "include": ["src/**/*", "examples/**/*.ts", "tests/**/*", "*.config.ts"],
+  "include": [
+    "src/**/*",
+    "examples/**/*.ts",
+    "tests/**/*",
+    "*.config.ts",
+    "defines.d.ts"
+  ],
   "compilerOptions": {
     "resolveJsonModule": true
   }

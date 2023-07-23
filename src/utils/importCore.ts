@@ -7,22 +7,18 @@ export const importCore = async (
 ): Promise<FFmpegCoreConstructor> => {
   switch (typeof core) {
     case "string": {
-      try {
-        //@ts-expect-error this is an inline module
-        await import("data:text/javascript;base64,Cg==");
+      if (__IS_ESM__) {
         logger("debug", `Import '${core}' with esm dynamic import()`);
         return ((await import(core)) as { default: FFmpegCoreConstructor })
           .default;
-      } catch (err) {
-        if (typeof require === "function") {
-          logger("debug", `Import '${core}' with cjs require()`);
-          // eslint-disable-next-line @typescript-eslint/no-var-requires
-          return require(core) as FFmpegCoreConstructor;
-        }
-      }
-      throw new Error(
-        "Neither import nor require exists, please try to import the core manually!"
-      );
+      } else if (__IS_CJS__) {
+        logger("debug", `Import '${core}' with cjs require()`);
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        return require(core) as FFmpegCoreConstructor;
+      } else
+        throw new Error(
+          "Neither import nor require exists, please try to import the core manually!"
+        );
     }
     case "function":
       logger("debug", "FFmpeg core constructor detected, use it directly");
