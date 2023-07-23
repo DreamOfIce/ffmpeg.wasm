@@ -127,7 +127,7 @@ class FFmpeg {
   public async run(..._args: string[]): Promise<number> {
     if (this._exited) throw new Error("FFmpeg core has already been exited!");
 
-    const args = ["ffmpeg", ..._args];
+    const args = ["ffmpeg", ...this.options.defaultArgs, ..._args];
 
     const handle = Symbol(
       process?.env?.["NODE_ENV"] === "development"

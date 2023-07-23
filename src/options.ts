@@ -24,7 +24,7 @@ const defaultInitOptions: Required<FFmpegInitOptions> = {
   log: false,
   logger: (level, ...msg) =>
     level !== "debug" &&
-    process?.env?.["NODE_ENV"] === "development" &&
+    process?.env?.["NODE_ENV"] !== "development" &&
     console[level](`[${level}] `, ...msg),
 };
 
