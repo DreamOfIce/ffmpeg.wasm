@@ -40,7 +40,7 @@ class FFmpeg {
     argc: number,
     argv: number,
     resolve: number,
-    reject: number
+    reject: number,
   ) => number;
   protected options: Required<FFmpegInitOptions>;
   protected tasks: Map<
@@ -57,7 +57,7 @@ class FFmpeg {
   private constructor(
     core: FFmpegCore,
     options: Required<FFmpegInitOptions>,
-    coreVersion: FFmpegCoreVersion
+    coreVersion: FFmpegCoreVersion,
   ) {
     this.core = core;
     this.options = options;
@@ -82,7 +82,7 @@ class FFmpeg {
    * @returns created instance
    */
   public static async create(
-    _options: FFmpegInitOptions = {}
+    _options: FFmpegInitOptions = {},
   ): Promise<FFmpeg> {
     const options = { ...defaultInitOptions, ..._options };
     options.coreOptions.locateFile ??= (url, prefix) => {
@@ -132,7 +132,7 @@ class FFmpeg {
     const handle = Symbol(
       process?.env?.["NODE_ENV"] === "development"
         ? `FFmpeg convert ${args.join(" ")}`
-        : ""
+        : "",
     );
     let argsPtr: number | undefined,
       resloveCallbackPtr: number | undefined,
@@ -147,7 +147,7 @@ class FFmpeg {
             args.length,
             argsPtr,
             resloveCallbackPtr,
-            rejectCallbackPtr
+            rejectCallbackPtr,
           );
           if (!result) reject("Failed to add task into queue!");
           this.tasks.set(handle, {
@@ -192,13 +192,13 @@ class FFmpeg {
    * @returns
    */
   public exit(
-    handleInProgress: "break" | "kill" | "wait" = "break"
+    handleInProgress: "break" | "kill" | "wait" = "break",
   ): boolean | Promise<boolean> {
     this._exited = true;
     switch (handleInProgress) {
       case "wait":
         return Promise.allSettled(
-          Array.from(this.tasks.values()).map(({ promise }) => promise)
+          Array.from(this.tasks.values()).map(({ promise }) => promise),
         ).then(() => this.core.exit());
       case "kill":
         this.tasks.forEach(({ reject }) => reject("ffmpeg core has exited!"));
@@ -226,9 +226,6 @@ class FFmpeg {
   }
 }
 
-type FFmpegExecWrapper = FFmpeg["exec"];
-type FFmpegExecAsyncWrapper = FFmpeg["exec"];
-
-export default FFmpeg;
-export type { FFmpegExecWrapper, FFmpegExecAsyncWrapper };
+export { FFmpeg };
+export * from "./types";
 export * from "./utils";

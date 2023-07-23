@@ -1,5 +1,5 @@
 import { readFile, writeFile } from "fs/promises";
-import FFmpeg from "../../src";
+import { FFmpeg } from "../../src";
 import { join } from "path";
 import { assetsDir, outDir } from "./utils";
 
@@ -24,7 +24,7 @@ await Promise.all(
   ffmpeg.fs
     .readdir("/")
     .filter((file) => file.endsWith(".bmp"))
-    .map((file) => writeFile(join(outDir, file), ffmpeg.fs.readFile(file)))
+    .map((file) => writeFile(join(outDir, file), ffmpeg.fs.readFile(file))),
 );
 
 await ffmpeg.exit("kill");

@@ -1,5 +1,5 @@
 import { readFile, writeFile } from "fs/promises";
-import FFmpeg from "../../src";
+import { FFmpeg } from "../../src";
 import { join } from "path";
 import { assetsDir, outDir } from "./utils";
 
@@ -10,13 +10,13 @@ const ffmpeg = await FFmpeg.create({
 
 ffmpeg.fs.writeFile(
   "audio.ogg",
-  await readFile(join(assetsDir, "triangle", "audio.ogg"))
+  await readFile(join(assetsDir, "triangle", "audio.ogg")),
 );
 for (let i = 0; i < 60; i += 1) {
   const num = `00${i}`.slice(-3);
   ffmpeg.fs.writeFile(
     `tmp.${num}.png`,
-    await readFile(join(assetsDir, "triangle", `tmp.${num}.png`))
+    await readFile(join(assetsDir, "triangle", `tmp.${num}.png`)),
   );
 }
 console.log(ffmpeg.fs.readdir("/"));

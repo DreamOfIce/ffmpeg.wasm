@@ -1,5 +1,5 @@
 import { readFile, writeFile } from "fs/promises";
-import FFmpeg from "../../src";
+import { FFmpeg } from "../../src";
 import { join } from "path";
 import { assetsDir, outDir } from "./utils";
 
