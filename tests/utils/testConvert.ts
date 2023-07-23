@@ -32,7 +32,7 @@ export const testConvert = (ffmpeg: FFmpeg, testCase: FFmpegTestCase) => {
       });
 
       // convert
-      await ffmpeg.run(testCase.args);
+      await ffmpeg.run(...testCase.args);
 
       // test outputs
       await Promise.all(

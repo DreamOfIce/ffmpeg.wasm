@@ -1,10 +1,8 @@
 import { version } from "../package.json";
 import {
   defaultInitOptions,
-  defaultRunningOptions,
   type FFmpegInitOptions,
   type FFmpegLogger,
-  type FFmpegRunningOptions,
 } from "./options";
 import type {
   FFmpegCore,
@@ -126,18 +124,10 @@ class FFmpeg {
     return new FFmpeg(core, options, coreVersion);
   }
 
-  public async run(
-    _args: string[],
-    _options: Partial<FFmpegRunningOptions> = {}
-  ): Promise<number> {
+  public async run(..._args: string[]): Promise<number> {
     if (this._exited) throw new Error("FFmpeg core has already been exited!");
 
-    const options = { ...defaultRunningOptions, ..._options };
-    const args = [
-      "ffmpeg",
-      ...(options.useDefaultArgs ? this.options.defaultArgs.concat(_args) : []),
-      ..._args,
-    ];
+    const args = ["ffmpeg", ..._args];
 
     const handle = Symbol(
       process?.env?.["NODE_ENV"] === "development"
@@ -181,18 +171,10 @@ class FFmpeg {
     }
   }
 
-  public runSync(
-    _args: string[],
-    _options: Partial<FFmpegRunningOptions> = {}
-  ): number {
+  public runSync(..._args: string[]): number {
     if (this._exited) throw new Error("FFmpeg core has already been exited!");
 
-    const options = { ...defaultRunningOptions, ..._options };
-    const args = [
-      "ffmpeg",
-      ...(options.useDefaultArgs ? this.options.defaultArgs.concat(_args) : []),
-      ..._args,
-    ];
+    const args = ["ffmpeg", ..._args];
 
     const argsPtr = writeArgs(this.core, args);
     try {

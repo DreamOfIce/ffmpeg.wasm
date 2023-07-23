@@ -28,18 +28,4 @@ const defaultInitOptions: Required<FFmpegInitOptions> = {
     console[level](`[${level}] `, ...msg),
 };
 
-interface FFmpegRunningOptions {
-  useDefaultArgs: boolean;
-}
-
-const defaultRunningOptions: Required<FFmpegRunningOptions> = {
-  useDefaultArgs: true,
-};
-
-export {
-  type FFmpegInitOptions,
-  type FFmpegLogger,
-  type FFmpegRunningOptions,
-  defaultInitOptions,
-  defaultRunningOptions,
-};
+export { type FFmpegInitOptions, type FFmpegLogger, defaultInitOptions };

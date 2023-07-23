@@ -57,10 +57,10 @@ describe("basic", () => {
     });
     const logger = vi.fn().mockName("logger");
     ffmpeg.setLogger(logger);
-    await ffmpeg.run(["-version"]);
+    await ffmpeg.run("-version");
     expect(logger).not.toHaveBeenCalled();
     ffmpeg.setLogging(true);
-    await ffmpeg.run(["-version"]);
+    await ffmpeg.run("-version");
     expect(logger).toHaveBeenCalled();
   });
 });
