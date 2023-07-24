@@ -124,6 +124,11 @@ class FFmpeg {
     return new FFmpeg(core, options, coreVersion);
   }
 
+  /**
+   * Execute FFmpeg like CLI (stdin is not available)
+   * @param _args array of parameters, same as CLI
+   * @returns promise with exit code
+   */
   public async run(..._args: string[]): Promise<number> {
     if (this._exited) throw new Error("FFmpeg core has already been exited!");
 
@@ -171,6 +176,11 @@ class FFmpeg {
     }
   }
 
+  /**
+   * Force FFmpeg to run synchronously (same behaviour as ffmpeg.run() in single-thread core)
+   * @param _args array of parameters, same as CLI
+   * @returns exit code
+   */
   public runSync(..._args: string[]): number {
     if (this._exited) throw new Error("FFmpeg core has already been exited!");
 
@@ -215,8 +225,8 @@ class FFmpeg {
     return this.core.exit();
   }
 
-  public setLogging(enbale: boolean) {
-    this.options.log = enbale;
+  public setLogging(enbaled: boolean) {
+    this.options.log = enbaled;
   }
 
   /**

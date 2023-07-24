@@ -1,21 +1,10 @@
-<p align="center">
-  <a href="#">
-    <img alt="ffmpeg.wasm" width="128px" height="128px" src="./docs/images/ffmpegwasm-icon.png">
-  </a>
-</p>
-
 # FFmpeg.wasm
 
-[![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)](https://github.com/emersion/stability-badges#experimental)
-[![Node Version](https://img.shields.io/node/v/@ffmpeg.wasm/main.svg)](https://img.shields.io/node/v/@ffmpeg.wasm/main.svg)
-[![Actions Status](https://github.com/ffmpeg.wasm/ffmpeg.wasm/workflows/CI/badge.svg)](https://github.com/ffmpeg.wasm/ffmpeg.wasm/actions)
-![CodeQL](https://github.com/ffmpeg.wasm/ffmpeg.wasm/workflows/CodeQL/badge.svg)
-![npm (tag)](https://img.shields.io/npm/v/@ffmpeg.wasm/main/latest)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/ffmpeg.wasm/ffmpeg.wasm/graphs/commit-activity)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Code Style](https://badgen.net/badge/code%20style/airbnb/ff5a5f?icon=airbnb)](https://github.com/airbnb/javascript)
-[![Downloads Total](https://img.shields.io/npm/dt/@ffmpeg.wasm/main.svg)](https://www.npmjs.com/package/@ffmpeg.wasm/main)
-[![Downloads Month](https://img.shields.io/npm/dm/@ffmpeg.wasm/main.svg)](https://www.npmjs.com/package/@ffmpeg.wasm/main)
+[![npm (scoped)](https://img.shields.io/npm/v/%40ffmpeg.wasm/main)](https://www.npmjs.com/package/@ffmpeg.wasm/main)
+[![NPM Downloads](https://img.shields.io/npm/dm/@ffmpeg.wasm/main.svg)](https://www.npmjs.com/package/@ffmpeg.wasm/main)
+[![JSdelivr Downloads](https://data.jsdelivr.com/v1/package/npm/@ffmpeg.wasm/main/badge)](https://www.jsdelivr.com/package/npm/@ffmpeg.wasm/main)
+[![LICENSE](https://img.shields.io/npm/l/%40ffmpeg.wasm%2Fmain)](./LICENSE)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 
 ## About this fork
 
@@ -49,9 +38,10 @@ Hopefully these changes can be merged into ffmpegwasm in the future
 - [x] Update deps
 - [x] Rewrite with TypeScript
 - [x] Support for parallel tasks in multi-threaded mode
+- [ ] Document site
 - [ ] Support build cache
 - [ ] Migrate to monorepo
-- [ ] use SMID to speedup converts
+- [ ] SIMD and WASI version
 - [ ] Upgrade to FFmpeg@6
 - [ ] Use the faster `libsvtav1` instead of `libaom` (currently disabled because it is too slow)
 
@@ -71,17 +61,18 @@ $ npm install @ffmpeg.wasm/main @ffmpeg.wasm/core-mt
 
 Or, using a script tag in the browser (only works in some browsers, see list below):
 
-> `SharedArrayBuffer` is only available to pages that are [cross-origin isolated](https://developer.chrome.com/blog/enabling-shared-array-buffer/#cross-origin-isolation). You need to send headers `Cross-Origin-Embedder-Policy: require-corp` and `Cross-Origin-Opener-Policy: same-origin` for your site, and make sure your static resource server(or public CDN) contains the header `Cross-Origin- Resource-Policy: cross-origin`(e.g. [jsdelivr](https://jsdelivr.com), not [unpkg](https://unpkg.com))
+> Only browsers with `SharedArrayBuffer` support can use multi-thread core(`@ffmpeg.wasm/core-mt`), you can check [HERE](https://caniuse.com/sharedarraybuffer) for the complete list.
+
+> [SharedArrayBuffer](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) is only available to pages that are [cross-origin isolated](https://developer.chrome.com/blog/enabling-shared-array-buffer/#cross-origin-isolation). You need to send headers `Cross-Origin-Embedder-Policy: require-corp` and `Cross-Origin-Opener-Policy: same-origin` for your site, and make sure your static resource server(or public CDN) contains the header `Cross-Origin-Resource-Policy: cross-origin`(e.g. [JSdelivr](https://jsdelivr.com), not [Unpkg](https://unpkg.com))
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/@ffmpeg.wasm/main/dist/index.global.js"></script>
 <script>
-  const { create } = FFmpeg;
-  ...
+  const ffmpeg = FFmpeg.create({
+    /* ... */
+  });
 </script>
 ```
-
-> Only browsers with SharedArrayBuffer support can use `ffmpeg.wasm`, you can check [HERE](https://caniuse.com/sharedarraybuffer) for the complete list.
 
 ## Usage
 
@@ -102,13 +93,14 @@ process.exit(0);
 ### Use other version of ffmpeg.wasm core
 
 For each version of ffmpeg.wasm, there is a default version of `@ffmpeg.wasm/core-mt` (you can find it in `devDependencies` section of [package.json](./package.json)), but sometimes you may need to use newer version of `@ffmpeg.wasm/core-mt` to use the latest/experimental features.
+**Warning:** before reaching v1.0.0, there may be incompatibilities between each minor version of the core, see the [migration guide](./docs/migrate/README.md) for more details!
 
-**Node**
+#### Node
 
 Just install the specific version you need:
 
 ```sh
-$ npm install @ffmpeg.wasm/core-mt
+$ npm install @ffmpeg.wasm/core-mt@$version
 ```
 
 Or use your own version with customized path
@@ -119,23 +111,13 @@ const ffmpeg = await FFmpeg.create({
 });
 ```
 
-**Browser**
+#### Browser
 
 ```ts
 const ffmpeg = await FFmpeg.create({
-  core: "https://cdn.jsdelivr.net/npm/@ffmpeg.wasm/core-mt/dist/core.min.js",
+  core: "https://cdn.jsdelivr.net/npm/@ffmpeg.wasm@$version/core-mt/dist/core.min.js",
 });
 ```
-
-Keep in mind that for compatibility with webworkers and nodejs this will default to a local path, so it will attempt to look for `'static/js/ffmpeg.core.js'` locally, often resulting in a local resource error. If you wish to use a core version hosted on your own domain, you might reference it relatively like this:
-
-```ts
-const ffmpeg = await FFmpeg.create({
-  core: new URL("static/js/ffmpeg-core.js", document.location).href,
-});
-```
-
-For the list available versions and their changelog, please check: https://github.com/ffmpeg.wasm/ffmpeg.wasm-core/releases
 
 ### Use single thread version
 

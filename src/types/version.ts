@@ -4,23 +4,13 @@ interface FFmpegVersion {
 }
 
 interface FFmpegCoreVersion {
-  /**
-   * Version of FFmpeg core
-   */
+  /** Version of FFmpeg core */
   version: string;
-  /**
-   * Build params
-   */
+  /** Build params */
   configuration: string;
-  /**
-   * Libraries version
-   */
-  libs: {
-    [name: string]: string;
-  };
-  /**
-   * Raw result of $(ffmpeg -version)
-   */
+  /** Libraries version */
+  libs: Record<string, string>;
+  /** Raw result of $(ffmpeg -version) */
   raw: string;
 }
 

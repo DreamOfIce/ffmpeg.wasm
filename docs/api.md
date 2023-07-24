@@ -1,142 +1,291 @@
 # API
 
-- [createFFmpeg()](#create-ffmpeg)
-  - [ffmpeg.load()](#ffmpeg-load)
-  - [ffmpeg.run()](#ffmpeg-run)
-  - [ffmpeg.FS()](#ffmpeg-fs)
+- [FFmpeg.create()](#ffmpegcreateoptions)
+  - [ffmpeg.exited](#ffmpegexited)
+  - [ffmpeg.flags](#ffmpegflags)
+  - [ffmpeg.version](#ffmpegversion)
+  - [ffmpeg.run()](#ffmpegrun_args)
+  - [ffmpeg.runSync()](#ffmpegrunsync_args)
+  - [ffmpeg.fs()](#ffmpegfs)
   - [ffmpeg.exit()](#ffmpeg-exit)
-  - [ffmpeg.setLogging()](#ffmpeg-setlogging)
-  - [ffmpeg.setLogger()](#ffmpeg-setlogger)
-  - [ffmpeg.setProgress()](#ffmpeg-setProgress)
-- [fetchFile()](#fetch-file)
+  - [ffmpeg.setLogging()](#ffmpegsetloggingenbaled)
+  - [ffmpeg.setLogger()](#ffmpegsetloggerlogger)
 
 ---
 
-<a name="create-ffmpeg"></a>
+## FFmpeg.create(options)
 
-## createFFmpeg(options): ffmpeg
+`FFmpeg.create()` is a factory function that creates a ffmpeg instance.
 
-createFFmpeg is a factory function that creates a ffmpeg instance.
+**Types:**
+
+```ts
+FFmpeg.create(_options?: FFmpegInitOptions): Promise<FFmpeg>
+
+interface FFmpegInitOptions {
+  core?: string | FFmpegCoreConstructor;
+  coreOptions?: {
+    locateFile?: EmscriptenModule["locateFile"];
+    wasmPath?: string;
+    workerPath?: string;
+  };
+  defaultArgs?: string[];
+  log?: boolean;
+  logger?: FFmpegLogger;
+}
+type FFmpegLogger = (
+  level: "debug" | "info" | "warn" | "error",
+  ...msg: unknown[]
+) => void;
+```
 
 **Arguments:**
 
-- `options` an object of customized options
-  - `corePath` path for ffmpeg-core.js script
-  - `log` a boolean to turn on all logs, default is `false`
-  - `logger` a function to get log messages, a quick example is `({ message }) => console.log(message)`
-  - `progress` a function to trace the progress, a quick example is `p => console.log(p)`
+- `_options`: an object of customized options :
+  - `core`: path to `core.js` of FFmpeg.wasm core (default: `@ffmpeg.wasm/core-mt`)
+  - `coreOptions`: Normally, Emscripten looks for other files in the folder where core.js is located. You can change the default behaviour with the following options:
+    - `locateFile()` `locateFile` function of [Emscripten module object](https://emscripten.org/docs/api_reference/module.html#Module.locateFile)(**NOTE**: this setting overrides `wasmPath` and `workerPath`)
+    - `wasmPath`: path to `core.wasm` of FFmpeg.wasm core
+    - `workerPath`: path to `core.worker.js` of FFmpeg.wasm mt core
+  - `defaultArgs`: will be added to the front of the args when execute `ffmpeg.run()`(default: `["-nostdin", "-y", "-hide_banner"]`)
+  - `log`: a boolean to turn on all logs (default: `false`)
+  - `logger`: a function to get log messages(default: `(level, ...msg) => console[level](`[${level}] `, ...msg)`(`debug` level is only output if `NODE_ENV` is `development`))
 
 **Examples:**
 
-```javascript
-const { createFFmpeg } = FFmpeg;
-const ffmpeg = createFFmpeg({
-  corePath: "./node_modules/@ffmpeg.wasm/core-mt/dist/ffmpeg-core.js",
+```ts
+const ffmpeg = FFmpeg.create({
+  core: "@ffmpeg.wasm/core-mt",
   log: true,
 });
 ```
 
-<a name="ffmpeg-load"></a>
+### ffmpeg.exited
 
-### ffmpeg.load(): Promise
+Read-only, whether the core has exited
 
-Load ffmpeg.wasm-core script.
+**Types:**
 
-In browser environment, the ffmpeg.wasm-core script is fetch from CDN and can be assign to a local path by assigning `corePath`. In node environment, we use dynamic require and the default `corePath` is `$ffmpeg/core`.
+```ts
+readonly exited: boolean;
+```
 
-Typically the load() func might take few seconds to minutes to complete, better to do it as early as possible.
+### ffmpeg.flags
+
+flags for whether the core supports certain features:
+
+- simd: SIMD optimisation(currently disable for all cores)
+- thread: multi-thread support
+- wasi: [WASI](https://github.com/WebAssembly/WASI) support(reserved for future use)
+
+**Types:**
+
+```ts
+interface FFmpegFlags {
+  simd: boolean;
+  thread: boolean;
+  wasi: boolean;
+}
+```
 
 **Examples:**
 
-```javascript
-(async () => {
-  await ffmpeg.load();
-})();
+```ts
+import { FFmpeg } from "@ffmpeg.wasm/main";
+const ffmpeg1 = await FFmpeg.create({ core: "@ffmpeg.wasm/core-mt" });
+const ffmpeg2 = await FFmpeg.create({ core: "@ffmpeg.wasm/core-st" });
+
+console.log(ffmpeg1.flags); // { simd: false, thread: true, wasi: false }
+console.log(ffmpeg2.flags); // { simd: false, thread: false, wasi: false }
 ```
 
-<a name="ffmpeg-run"></a>
+### ffmpeg.version
 
-### ffmpeg.run(...args): Promise
+Version infos of ffmpeg instance
 
-This is the major function in ffmpeg.wasm, you can just imagine it as ffmpeg native cli and what you need to pass is the same.
+**Types:**
+
+```ts
+interface FFmpegVersion {
+  core: FFmpegCoreVersion;
+  main: string;
+}
+interface FFmpegCoreVersion {
+  /** Version of FFmpeg core */
+  version: string;
+  /** Build params */
+  configuration: string;
+  /** Libraries version */
+  libs: Record<string, string>;
+  /** Raw result of $(ffmpeg -version) */
+  raw: string;
+}
+```
+
+**Examples:**
+
+```ts
+{
+  main: '0.13.0',
+  core: {
+    version: 'v0.11.0-17-gf4361a7807',
+    configuration: "--target-os=none --arch=x86_32 --enable-cross-compile --disable-x86asm --disable-inline-asm --disable-stripping --disable-programs --disable-doc --disable-debug --disable-runtime-cpudetect --disable-autodetect --extra-cflags='-O3 --closure=1 -I/work/ffmpeg.wasm-core/build/include -s USE_PTHREADS=1' --extra-cxxflags='-O3 --closure=1 -I/work/ffmpeg.wasm-core/build/include -s USE_PTHREADS=1' --extra-ldflags='-O3 --closure=1 -I/work/ffmpeg.wasm-core/build/include -s USE_PTHREADS=1 -L/work/ffmpeg.wasm-core/build/lib' --pkg-config-flags=--static --nm=llvm-nm --ar=emar --ranlib=emranlib --cc=emcc --cxx=em++ --objcc=emcc --dep-cc=emcc --enable-gpl --enable-nonfree --enable-zlib --enable-libx264 --enable-libx265 --enable-libvpx --enable-libwavpack --enable-libmp3lame --enable-libfdk-aac --enable-libtheora --enable-libvorbis --enable-libfreetype --enable-libopus --enable-libwebp --enable-libass --enable-libfribidi",
+    libs: {
+      libavutil: '56.51.100',
+      libavcodec: '58.91.100',
+      libavformat: '58.45.100',
+      libavdevice: '58.10.100',
+      libavfilter: '7.85.100',
+      libswscale: '5.7.100',
+      libswresample: '3.7.100',
+      libpostproc: '55.7.100'
+    },
+    raw: 'ffmpeg version v0.11.0-17-gf4361a7807 Copyright (c) 2000-2020 the FFmpeg developers\n' +
+      'built with emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.43 (a6b8143cf3c1171db911750359456b15a8deece7)\n' +
+      "configuration: --target-os=none --arch=x86_32 --enable-cross-compile --disable-x86asm --disable-inline-asm --disable-stripping --disable-programs --disable-doc --disable-debug --disable-runtime-cpudetect --disable-autodetect --extra-cflags='-O3 --closure=1 -I/work/ffmpeg.wasm-core/build/include -s USE_PTHREADS=1' --extra-cxxflags='-O3 --closure=1 -I/work/ffmpeg.wasm-core/build/include -s USE_PTHREADS=1' --extra-ldflags='-O3 --closure=1 -I/work/ffmpeg.wasm-core/build/include -s USE_PTHREADS=1 -L/work/ffmpeg.wasm-core/build/lib' --pkg-config-flags=--static --nm=llvm-nm --ar=emar --ranlib=emranlib --cc=emcc --cxx=em++ --objcc=emcc --dep-cc=emcc --enable-gpl --enable-nonfree --enable-zlib --enable-libx264 --enable-libx265 --enable-libvpx --enable-libwavpack --enable-libmp3lame --enable-libfdk-aac --enable-libtheora --enable-libvorbis --enable-libfreetype --enable-libopus --enable-libwebp --enable-libass --enable-libfribidi\n" +
+      'libavutil      56. 51.100 / 56. 51.100\n' +
+      'libavcodec     58. 91.100 / 58. 91.100\n' +
+      'libavformat    58. 45.100 / 58. 45.100\n' +
+      'libavdevice    58. 10.100 / 58. 10.100\n' +
+      'libavfilter     7. 85.100 /  7. 85.100\n' +
+      'libswscale      5.  7.100 /  5.  7.100\n' +
+      'libswresample   3.  7.100 /  3.  7.100\n' +
+      'libpostproc    55.  7.100 / 55.  7.100\n' +
+      'Successfully parsed a group of options.\n' +
+      'Parsing a group of options: output url ffmpeg.\n' +
+      'Successfully parsed a group of options.\n' +
+      'Opening an output file: ffmpeg.\n' +
+      "Unable to find a suitable output format for 'ffmpeg'\n" +
+      'ffmpeg: Invalid argument\n' +
+      "Output #0, (null), to '(null)':\n" +
+      'Output file #0 does not contain any stream\n' +
+      'No input streams but output needs an input stream\n'
+  }
+}
+```
+
+### ffmpeg.run(...\_args)
+
+Execute FFmpeg like CLI (stdin is not available)
+
+**Types:**
+
+```ts
+run(..._args: string[]): Promise<number>
+```
 
 **Arguments:**
 
-- `args` string arguments just like cli tool.
+- `args` string arguments just like cli tool
 
 **Examples:**
 
-```javascript
-(async () => {
-  await ffmpeg.run("-i", "flame.avi", "-s", "1920x1080", "output.mp4");
-  /* equals to `$ ffmpeg -i flame.avi -s 1920x1080 output.mp4` */
-})();
+```ts
+/* equals to `$ ffmpeg -i flame.avi -s 1920x1080 output.mp4` */
+await ffmpeg.run("-i", "flame.avi", "-s", "1920x1080", "output.mp4");
 ```
 
-<a name="ffmpeg-fs"></a>
+### ffmpeg.runSync(...\_args)
 
-### ffmpeg.FS(method, ...args): any
+Force FFmpeg to run synchronously (same behaviour as [ffmpeg.run()](#ffmpegrun_args) with single-thread core)
 
-Run FS operations.
+**Types:**
 
-For input/output file of ffmpeg.wasm, it is required to save them to MEMFS first so that ffmpeg.wasm is able to consume them. Here we rely on the FS methods provided by Emscripten.
+```ts
+runSync(..._args: string[]): number
+```
+
+**Arguments:**
+
+- `_args` string arguments just like cli tool
+
+**Examples:**
+
+```ts
+/* equals to `$ ffmpeg -i flame.avi -s 1920x1080 output.mp4` */
+ffmpeg.runSync("-i", "flame.avi", "-s", "1920x1080", "output.mp4");
+```
+
+### ffmpeg.fs
+
+For input/output file of ffmpeg.wasm, it is required to save them to MEMFS first so that ffmpeg.wasm is able to consume them. Here we export the FS methods provided by Emscripten
 
 For more info, check https://emscripten.org/docs/api_reference/Filesystem-API.html
 
-**Arguments:**
-
-- `method` string method name
-- `args` arguments to pass to method
-
 **Examples:**
 
-```javascript
+```ts
 /* Write data to MEMFS, need to use Uint8Array for binary data */
-ffmpeg.FS('writeFile', 'video.avi', new Uint8Array(...));
+ffmpeg.fs.writeFile("video.avi", new Uint8Array(/*...*/));
 /* Read data from MEMFS */
-ffmpeg.FS('readFile', 'video.mp4');
+ffmpeg.fs.readFile("video.mp4");
 /* Delete file in MEMFS */
-ffmpeg.FS('unlink', 'video.mp4');
+ffmpeg.fs.unlink("video.mp4");
 ```
-
-<a name="ffmpeg-exit"></a>
 
 ### ffmpeg.exit()
 
-Kill the execution of the program, also remove MEMFS to free memory
+Disable new tasks, if there are unfinished tasks:
 
-**Examples:**
+- `kill` - terminate all ongoing tasks and exit
+- `break` - abort and return false if there are tasks in progress
+- `wait` - wait for all ongoing tasks to be completed and then exit
 
-```javascript
-const ffmpeg = createFFmpeg({ log: true });
-await ffmpeg.load(...);
-setTimeout(() => {
-  ffmpeg.exit(); // ffmpeg.exit() is callable only after load() stage.
-}, 1000);
-await ffmpeg.run(...);
+**Types:**
+
+```ts
+exit(handleInProgress: "wait"): Promise<boolean>;
+exit(handleInProgress?: "break" | "kill"): boolean;
 ```
 
-<a name="ffmpeg-setlogging"></a>
+**Arguments:** -`handleInProgress`: Processing mode for ongoing tasks(default: `kill`)
+**Examples:**
 
-### ffmpeg.setLogging(logging)
+```ts
+const ffmpeg = FFmpeg.create();
+
+ffmpeg.run(/* ... */);
+await ffmpeg.exit("wait");
+
+// the above is basically equal to
+await ffmpeg.run(/* ... */);
+ffmpeg.exit("wait");
+```
+
+### ffmpeg.setLogging(enbaled)
 
 Control whether to output log information to console
+**Types:**
 
-**Arguments**
+```ts
+setLogging(enbaled: boolean): void
+```
+
+**Arguments:**
 
 - `logging` a boolean to turn of/off log messages in console
 
 **Examples:**
 
-```javascript
+```ts
+const ffmpeg = FFmpeg.create({ log: false });
 ffmpeg.setLogging(true);
 ```
-
-<a name="ffmpeg-setlogger"></a>
 
 ### ffmpeg.setLogger(logger)
 
 Set customer logger to get ffmpeg.wasm output messages.
+
+**Types**
+
+```ts
+setLogger(logger: FFmpegLogger): void
+
+type FFmpegLogger = (
+  level: "debug" | "info" | "warn" | "error",
+  ...msg: unknown[]
+) => void;
+```
 
 **Arguments**
 
@@ -144,63 +293,7 @@ Set customer logger to get ffmpeg.wasm output messages.
 
 **Examples:**
 
-```javascript
-ffmpeg.setLogger(({ type, message }) => {
-  console.log(type, message);
-  /*
-   * type can be one of following:
-   *
-   * info: internal workflow debug messages
-   * fferr: ffmpeg native stderr output
-   * ffout: ffmpeg native stdout output
-   */
-});
-```
-
-<a name="ffmpeg-setprogress"></a>
-
-### ffmpeg.setProgress(progress)
-
-Progress handler to get current progress of ffmpeg command.
-
-**Arguments**
-
-- `progress` a function to handle progress info
-
-**Examples:**
-
-```javascript
-ffmpeg.setProgress(({ ratio }) => {
-  console.log(ratio);
-  /*
-   * ratio is a float number between 0 to 1.
-   */
-});
-```
-
-<a name="fetch-file"></a>
-
-### fetchFile(media): Promise
-
-Helper function for fetching files from various resource.
-
-Sometimes the video/audio file you want to process may located in a remote URL and somewhere in your local file system.
-
-This helper function helps you to fetch to file and return an Uint8Array variable for ffmpeg.wasm to consume.
-
-**Arguments**
-
-- `media` an URL string, base64 string or File, Blob, Buffer object
-
-**Examples:**
-
-```javascript
-(async () => {
-  const data = await fetchFile(
-    "https://github.com/DreamOfIce/testdata/raw/master/video-3s.avi",
-  );
-  /*
-   * data will be in Uint8Array format
-   */
-})();
+```ts
+const ffmpeg = FFmpeg.create();
+ffmpeg.setLogger((type, ...message) => console[type](...message));
 ```
