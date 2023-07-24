@@ -187,13 +187,15 @@ class FFmpeg {
     }
   }
   /**
-   *
-   * @param handleInProgress
-   * @returns
+   * Disable new tasks, if there are unfinished tasks:
+   * `kill`  - terminate all ongoing tasks and exit
+   * `break` - abort and return false if there are tasks in progress
+   * `wait`  - wait for all ongoing tasks to be completed and then exit
+   * @param handleInProgress Processing mode for ongoing tasks
    */
-  public exit(
-    handleInProgress: "break" | "kill" | "wait" = "break",
-  ): boolean | Promise<boolean> {
+  public exit(handleInProgress: "wait"): Promise<boolean>;
+  public exit(handleInProgress?: "break" | "kill"): boolean;
+  public exit(handleInProgress: "break" | "kill" | "wait" = "kill") {
     this._exited = true;
     switch (handleInProgress) {
       case "wait":
