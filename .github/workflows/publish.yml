@@ -25,10 +25,10 @@ jobs:
       - name: Install deps and build
         run: |
           pnpm install --frozen-lockfile
-          pnpm run build
+          pnpm build
 
       - name: Test before publish
-        run: pnpm run test
+        run: pnpm test
 
       - name: Publish
         env:
