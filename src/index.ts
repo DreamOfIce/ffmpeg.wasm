@@ -13,7 +13,7 @@ import type {
 } from "./types";
 import { importCore, logError, parseVersion, writeArgs } from "./utils";
 
-// arguments to get version
+// Arguments to get version
 const VERSION_ARGS = ["ffmpeg", "-version"];
 
 class FFmpeg {
@@ -25,13 +25,9 @@ class FFmpeg {
     return this._exited;
   }
   public flags: FFmpegFlags;
-  /**
-   * Memory file system
-   */
+  /** Memory file system API */
   public fs: FFmpegFileSystem;
-  /**
-   * Versions of FFmpeg.wasm
-   */
+  /** Versions of FFmpeg.wasm */
   public version: FFmpegVersion;
   protected core: FFmpegCore;
   protected _exited = false;
