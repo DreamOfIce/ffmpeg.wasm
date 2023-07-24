@@ -2,7 +2,7 @@
 
 ### ⚠ BREAKING CHANGES
 
-- use rest arguments in logger
+- refactor with TypeScript
 
 ### Features
 
