@@ -7,13 +7,13 @@
     "WebAssembly",
     "video"
   ],
-  "homepage": "https://github.com/ffmpeg.wasm/ffmpeg.wasm#readme",
+  "homepage": "https://github.com/FFmpeg-wasm/FFmpeg.wasm#readme",
   "bugs": {
-    "url": "https://github.com/ffmpeg.wasm/ffmpeg.wasm/issues"
+    "url": "https://github.com/FFmpeg-wasm/FFmpeg.wasm/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ffmpeg.wasm/ffmpeg.wasm.git"
+    "url": "git+https://github.com/FFmpeg-wasm/FFmpeg.wasm.git"
   },
   "license": "MIT",
   "author": "Jerome Wu <jeromewus@gmail.com>",
