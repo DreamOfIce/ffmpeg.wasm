@@ -23,8 +23,8 @@ const defaultInitOptions: Required<FFmpegInitOptions> = {
   defaultArgs: ["-nostdin", "-y", "-hide_banner"],
   log: false,
   logger: (level, ...msg) =>
-    level !== "debug" &&
-    process?.env?.["NODE_ENV"] !== "development" &&
+    level !== "debug" ||
+    process?.env?.["NODE_ENV"] === "development" &&
     console[level](`[${level}] `, ...msg),
 };
 
