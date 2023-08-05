@@ -1,4 +1,4 @@
-import type { FFmpegCoreConstructor } from "./types";
+import type { Emscripten, FFmpegCoreConstructor } from "./types";
 
 type FFmpegLogger = (
   level: "debug" | "info" | "warn" | "error",
@@ -8,7 +8,7 @@ type FFmpegLogger = (
 interface FFmpegInitOptions {
   core?: string | FFmpegCoreConstructor;
   coreOptions?: {
-    locateFile?: EmscriptenModule["locateFile"];
+    locateFile?: Emscripten.Module["locateFile"];
     wasmPath?: string;
     workerPath?: string;
   };
@@ -23,9 +23,9 @@ const defaultInitOptions: Required<FFmpegInitOptions> = {
   defaultArgs: ["-nostdin", "-y", "-hide_banner"],
   log: false,
   logger: (level, ...msg) =>
-    level !== "debug" &&
-    process?.env?.["NODE_ENV"] !== "development" &&
-    console[level](`[${level}] `, ...msg),
+    level !== "debug" ||
+    (process?.env?.["NODE_ENV"] === "development" &&
+      console[level](`[${level}] `, ...msg)),
 };
 
 export { type FFmpegInitOptions, type FFmpegLogger, defaultInitOptions };

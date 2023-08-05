@@ -41,7 +41,6 @@
     "@tsconfig/esm": "^1.0.4",
     "@tsconfig/node-lts": "^18.12.3",
     "@tsconfig/strictest": "^2.0.1",
-    "@types/emscripten": "^1.39.6",
     "@types/node": "^20.4.4",
     "@typescript-eslint/eslint-plugin": "^6.1.0",
     "@typescript-eslint/parser": "^6.1.0",
