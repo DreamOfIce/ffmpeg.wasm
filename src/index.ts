@@ -5,9 +5,9 @@ import {
   type FFmpegLogger,
 } from "./options";
 import type {
+  Emscripten,
   FFmpegCore,
   FFmpegCoreVersion,
-  FFmpegFileSystem,
   FFmpegFlags,
   FFmpegVersion,
 } from "./types";
@@ -26,7 +26,7 @@ class FFmpeg {
   }
   public flags: FFmpegFlags;
   /** Memory file system API */
-  public fs: FFmpegFileSystem;
+  public fs: Emscripten.FileSystem.FS;
   /** Versions of FFmpeg.wasm */
   public version: FFmpegVersion;
   protected core: FFmpegCore;

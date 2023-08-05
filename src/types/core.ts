@@ -1,21 +1,23 @@
-import type { FFmpegFileSystem } from "./fs";
+import type { Emscripten } from "./emscripten";
 
-interface FFmpegCore extends EmscriptenModule {
+export type FFmpegCoreRuntimeMethods =
+  | "addFunction"
+  | "ccall"
+  | "cwrap"
+  | "lengthBytesUTF8"
+  | "setValue"
+  | "stringToUTF8";
+
+interface FFmpegCore extends Emscripten.Module<FFmpegCoreRuntimeMethods> {
   //flags
   simd: boolean;
   thread: boolean;
   wasi: boolean;
   // methods
-  addFunction: typeof addFunction;
-  ccall: typeof ccall;
-  cwrap: typeof cwrap;
   exit: () => boolean;
-  FS: FFmpegFileSystem;
-  lengthBytesUTF8: typeof lengthBytesUTF8;
-  setValue: typeof setValue;
-  stringToUTF8: typeof stringToUTF8;
+  FS: Emscripten.FileSystem.FS;
 }
 
-type FFmpegCoreConstructor = EmscriptenModuleFactory<FFmpegCore>;
+type FFmpegCoreConstructor = Emscripten.ModuleFactory<FFmpegCore>;
 
 export type { FFmpegCore, FFmpegCoreConstructor };

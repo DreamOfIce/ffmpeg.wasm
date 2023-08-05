@@ -6,6 +6,7 @@
   ],
   "include": ["src/**/*", "examples/**/*.ts", "tests/**/*", "*.config.ts"],
   "compilerOptions": {
+    "lib": ["dom"],
     "resolveJsonModule": true
   }
 }
