@@ -142,7 +142,7 @@ Need to pass `-row-mt 1`, but can only use one thread to help, can speed up arou
 ## Documentation
 
 - [API](./docs/api.md)
-- [Supported External Libraries](https://github.com/ffmpeg.wasm/ffmpeg.wasm-core#configuration)
+- [Supported External Libraries](https://github.com/FFmpeg-wasm/ffmpeg.wasm-core#configuration)
 
 ## FAQ
 
@@ -150,8 +150,8 @@ Need to pass `-row-mt 1`, but can only use one thread to help, can speed up arou
 
 There are two components inside ffmpeg.wasm:
 
-- @ffmpeg.wasm/main (https://github.com/ffmpeg.wasm/ffmpeg.wasm)
-- @ffmpeg.wasm/core-mt (https://github.com/ffmpeg.wasm/ffmpeg.wasm-core)
+- @ffmpeg.wasm/main (https://github.com/FFmpeg-wasm/ffmpeg.wasm)
+- @ffmpeg.wasm/core-mt (https://github.com/FFmpeg-wasm/ffmpeg.wasm-core)
 
 @ffmpeg.wasm/core-mt contains WebAssembly code which is transpiled from original FFmpeg C code with minor modifications, but overall it still following the same licenses as FFmpeg and its external libraries (as each external libraries might have its own license).
 
