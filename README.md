@@ -1,6 +1,6 @@
 # FFmpeg.wasm
 
-[![npm (scoped)](https://img.shields.io/npm/v/%40ffmpeg.wasm/main)](https://www.npmjs.com/package/@ffmpeg.wasm/main)
+[![NPM](https://img.shields.io/npm/v/%40ffmpeg.wasm/main)](https://www.npmjs.com/package/@ffmpeg.wasm/main)
 [![NPM Downloads](https://img.shields.io/npm/dm/@ffmpeg.wasm/main.svg)](https://www.npmjs.com/package/@ffmpeg.wasm/main)
 [![JSdelivr Downloads](https://data.jsdelivr.com/v1/package/npm/@ffmpeg.wasm/main/badge)](https://www.jsdelivr.com/package/npm/@ffmpeg.wasm/main)
 [![LICENSE](https://img.shields.io/npm/l/%40ffmpeg.wasm%2Fmain)](./LICENSE)
@@ -9,16 +9,16 @@
 ## About this fork
 
 Thanks to [Jerome Wu](https://github.com/jeromewu) for creating the very cool package ffmpegwasm!
-However, because this package hasn't been updated in a long time, a lot of features are on hold and it's not compatible with node18 and above (because the emsdk version is too old). So I decided to maintain a fork, fix the problems and continue development iterations.
+~~However, because this package hasn't been updated in a long time, a lot of features are on hold and it's not compatible with node18 and above (because the emsdk version is too old). So I decided to maintain a fork, fix the problems and continue development iterations.~~
+Update: Jerome Wu updated ffmpegwasm, but dropped nodejs support because "If you are not in browser, there are a lot of better choices than using WebAssembly for a better performance ". However, I don't entirely agree with this. WebAssembly gives us the possibility of run programs at high performance in both native and browser environments with the same code. The convenience and portability it brings is unmatched by any other solution, and the current performance issues will hopefully be resolved in the foreseeable future. So I decide to keep maintaining this project.
 Feel free to create issues or pull requests ヾ(≧▽≦\*)o
-Hopefully these changes can be merged into ffmpegwasm in the future
 
 ### Release Plan
 
-> See the [Todos](#todos) chapter for more plans
+> See the [Todos](#todos) section for more plans
 
 - v0.12 is fully compatible with ffmpegwasm v0.11.x, but updates emsdk to the latest and fixes some bugs
-- Since v0.13, I will start refactoring with a modern toolchain (TypeScript, vite, etc), **which will bring some breaking changes**.
+- Since v0.13, we'll try to add some new features and refactor it using a modern toolchain **this may bring some breaking changes in minor version**.
 
 ### Migration from ffmpegwasm
 
@@ -39,8 +39,9 @@ Hopefully these changes can be merged into ffmpegwasm in the future
 - [x] Rewrite with TypeScript
 - [x] Support for parallel tasks in multi-threaded mode
 - [ ] Document site
-- [ ] Support build cache
 - [ ] Migrate to monorepo
+- [ ] Build with [xmake](https://xmake.io/)
+- [ ] Support build cache
 - [ ] SIMD and WASI version
 - [ ] Upgrade to FFmpeg@6
 - [ ] Use the faster `libsvtav1` instead of `libaom` (currently disabled because it is too slow)
