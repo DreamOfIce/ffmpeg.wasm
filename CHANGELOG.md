@@ -1,3 +1,10 @@
+## [0.13.1](https://github.com/FFmpeg-wasm/FFmpeg.wasm/compare/0.13.0...0.13.1) (2023-08-05)
+
+### Bug Fixes
+
+- fix logger ([0e6a3dc](https://github.com/FFmpeg-wasm/FFmpeg.wasm/commit/0e6a3dc251cc99c881a00ac31d70a88c856cb31c))
+- fix type error in dist, close [#5](https://github.com/FFmpeg-wasm/FFmpeg.wasm/issues/5) ([46a1452](https://github.com/FFmpeg-wasm/FFmpeg.wasm/commit/46a1452124ea15e934ed05230344469fe8a3ed57))
+
 ## 0.13.0 (2023-07-24)
 
 ### ⚠ BREAKING CHANGES
