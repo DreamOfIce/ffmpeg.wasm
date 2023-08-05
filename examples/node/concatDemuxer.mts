@@ -1,7 +1,7 @@
 import { readFile, writeFile } from "fs/promises";
 import { FFmpeg } from "../../src";
 import { join } from "path";
-import { assetsDir, outDir } from "./utils";
+import { assetsDir, outDir } from "./utils.mjs";
 
 const ffmpeg = await FFmpeg.create({
   core: "@ffmpeg.wasm/core-mt",
@@ -9,18 +9,19 @@ const ffmpeg = await FFmpeg.create({
 });
 
 ffmpeg.fs.writeFile("flame.avi", await readFile(join(assetsDir, "flame.avi")));
+ffmpeg.fs.writeFile("concat_list.txt", "file flame.avi\nfile flame.avi");
 
-await ffmpeg.run([
+await ffmpeg.run(
+  "-f",
+  "concat",
+  "-safe",
+  "0",
   "-i",
-  "flame.avi",
-  "-i",
-  "flame.avi",
-  "-filter_complex",
-  "hstack",
-  "flame.mp4",
-]);
+  "concat_list.txt",
+  "flame.mp4"
+);
 
 await writeFile(join(outDir, "flame.mp4"), ffmpeg.fs.readFile("flame.mp4"));
 
-await ffmpeg.exit("kill");
+ffmpeg.exit();
 process.exit(0);

@@ -1,7 +1,7 @@
 import { readFile, writeFile } from "fs/promises";
 import { FFmpeg } from "../../src";
 import { join } from "path";
-import { assetsDir, outDir } from "./utils";
+import { assetsDir, outDir } from "./utils.mjs";
 
 const ffmpeg = await FFmpeg.create({
   core: "@ffmpeg.wasm/core-mt",
@@ -9,8 +9,8 @@ const ffmpeg = await FFmpeg.create({
 });
 
 ffmpeg.fs.writeFile("flame.avi", await readFile(join(assetsDir, "flame.avi")));
-await ffmpeg.run(["-i", "flame.avi", "flame.mp4"]);
+await ffmpeg.run("-i", "flame.avi", "flame.mp4");
 await writeFile(join(outDir, "flame.mp4"), ffmpeg.fs.readFile("flame.mp4"));
 
-await ffmpeg.exit("kill");
+ffmpeg.exit();
 process.exit(0);
