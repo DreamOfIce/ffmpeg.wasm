@@ -29,7 +29,7 @@
     "lint:eslint": "eslint --ext .ts --fix ./src",
     "lint:prettier": "prettier --write .",
     "prepare": "husky install",
-    "release": "release-it",
+    "release": "dotenv release-it",
     "test": "vitest"
   },
   "devDependencies": {
@@ -44,6 +44,7 @@
     "@types/node": "^20.4.4",
     "@typescript-eslint/eslint-plugin": "^6.1.0",
     "@typescript-eslint/parser": "^6.1.0",
+    "dotenv-cli": "^7.2.1",
     "eslint": "^8.45.0",
     "eslint-config-prettier": "^8.8.0",
     "file-type": "^18.5.0",
