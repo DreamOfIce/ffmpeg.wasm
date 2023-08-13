@@ -1,0 +1,40 @@
+{
+  "name": "@ffmpeg.wasm/core-st",
+  "version": "0.13.2",
+  "description": "ffmpeg.wasm core (single thread)",
+  "keywords": [
+    "ffmpeg",
+    "webassembly",
+    "video",
+    "audio",
+    "transcode"
+  ],
+  "homepage": "https://github.com/ffmpeg.wasm/ffmpeg.wasm-core#readme",
+  "bugs": {
+    "url": "https://github.com/ffmpeg.wasm/ffmpeg.wasm-core/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ffmpeg.wasm/ffmpeg.wasm-core.git"
+  },
+  "license": "MIT",
+  "author": "jeromewus@gmail.com",
+  "main": "dist/core.js",
+  "types": "index.d.ts",
+  "files": [
+    "dist",
+    "index.d.ts"
+  ],
+  "scripts": {
+    "release": "release-it"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "release-it": {
+    "git": false
+  },
+  "devDependencies": {
+    "@types/emscripten": "^1.39.7"
+  }
+}

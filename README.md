@@ -38,10 +38,11 @@ Feel free to create issues or pull requests ヾ(≧▽≦\*)o
 - [x] Update deps
 - [x] Rewrite with TypeScript
 - [x] Support for parallel tasks in multi-threaded mode
+- [x] Migrate to monorepo
 - [ ] Document site
-- [ ] Migrate to monorepo
 - [ ] Build with [xmake](https://xmake.io/)
 - [ ] Support build cache
+- [ ] Benchmark
 - [ ] SIMD and WASI version
 - [ ] Upgrade to FFmpeg@6
 - [ ] Use the faster `libsvtav1` instead of `libaom` (currently disabled because it is too slow)

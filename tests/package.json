@@ -1,0 +1,13 @@
+{
+  "name": "@ffmpeg.wasm/tests",
+  "private": true,
+  "scripts": {
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "@ffmpeg.wasm/core-mt": "workspace:*",
+    "@ffmpeg.wasm/core-st": "workspace:*",
+    "file-type": "^18.5.0",
+    "vitest": "^0.33.0"
+  }
+}

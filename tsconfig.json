@@ -1,12 +1,4 @@
 {
-  "extends": [
-    "@tsconfig/node-lts/tsconfig.json",
-    "@tsconfig/strictest/tsconfig.json",
-    "@tsconfig/esm/tsconfig.json"
-  ],
-  "include": ["src/**/*", "examples/**/*.mts", "tests/**/*", "*.config.ts"],
-  "compilerOptions": {
-    "lib": ["dom"],
-    "resolveJsonModule": true
-  }
+  "extends": "./tsconfig.base.json",
+  "include": ["packages/**/*", "examples/**/*.mts", "tests/**/*"]
 }

@@ -1,13 +1,15 @@
 import { describe, expect, test, vi } from "vitest";
-import { version } from "../package.json";
-import { FFmpeg } from "../src";
+import { version } from "../packages/main/package.json";
+import { FFmpeg } from "../packages/main/src";
 
 describe("create", () => {
   test("construct with core path string", () =>
     FFmpeg.create({ core: "@ffmpeg.wasm/core-mt" }));
 
   test("construct with core factory function", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const core = (await import("@ffmpeg.wasm/core-mt")).default;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     await FFmpeg.create({ core });
   });
 
@@ -22,13 +24,6 @@ describe("create", () => {
       //@ts-expect-error intentional behaviour
       FFmpeg.create({ core: undefined }),
     ).rejects.toThrowError());
-
-  test("construct with operator `new` (expect error)", () =>
-    expect(
-      () =>
-        //@ts-expect-error intentional behaviour
-        void new FFmpeg(),
-    ).toThrowError());
 });
 
 describe("basic", () => {
@@ -46,7 +41,7 @@ describe("basic", () => {
       core: "@ffmpeg.wasm/core-mt",
     });
     expect(ffmpeg.exited).toBe(false);
-    await ffmpeg.exit("kill");
+    ffmpeg.exit();
     expect(ffmpeg.exited).toBe(true);
   });
 

@@ -1,5 +1,5 @@
 import { describe } from "vitest";
-import { FFmpeg } from "../src";
+import { FFmpeg } from "../packages/main/src";
 import { testConvert } from "./utils";
 import { testCases } from "./cases";
 

@@ -1,12 +1,7 @@
 {
-  "name": "@ffmpeg.wasm/main",
-  "version": "0.13.1",
-  "description": "WebAssembly version of FFmpeg",
-  "keywords": [
-    "ffmpeg",
-    "WebAssembly",
-    "video"
-  ],
+  "name": "@ffmpeg.wasm/workspace-root",
+  "version": "1.0.0",
+  "private": true,
   "homepage": "https://github.com/FFmpeg-wasm/FFmpeg.wasm#readme",
   "bugs": {
     "url": "https://github.com/FFmpeg-wasm/FFmpeg.wasm/issues"
@@ -16,27 +11,21 @@
     "url": "git+https://github.com/FFmpeg-wasm/FFmpeg.wasm.git"
   },
   "license": "MIT",
-  "author": "Jerome Wu <jeromewus@gmail.com>",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
   "scripts": {
-    "build": "tsup",
+    "build": "pnpm -r run build",
     "lint": "pnpm run \"/^lint:.*/\"",
     "lint:eslint": "eslint --ext .ts --fix ./src",
     "lint:prettier": "prettier --write .",
     "prepare": "husky install",
-    "release": "dotenv release-it",
-    "test": "vitest"
+    "release": "pnpm release:core-mt && pnpm release:core-st && pnpm release:main && dotenv release-it",
+    "release:core-mt": "pnpm -C packages/core-mt release",
+    "release:core-st": "pnpm -C packages/core-st release",
+    "release:main": "pnpm -C packages/main release",
+    "test": "pnpm run -C tests test"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.7",
     "@commitlint/config-conventional": "^17.6.7",
-    "@ffmpeg.wasm/core-mt": "^0.13.2",
-    "@ffmpeg.wasm/core-st": "^0.13.2",
     "@release-it/conventional-changelog": "^7.0.0",
     "@tsconfig/esm": "^1.0.4",
     "@tsconfig/node-lts": "^18.12.3",
@@ -47,18 +36,12 @@
     "dotenv-cli": "^7.2.1",
     "eslint": "^8.45.0",
     "eslint-config-prettier": "^8.8.0",
-    "file-type": "^18.5.0",
     "husky": "^8.0.3",
     "nano-staged": "^0.8.0",
     "prettier": "^3.0.0",
     "prettier-plugin-packagejson": "^2.4.5",
     "release-it": "^16.1.3",
-    "tsup": "^7.1.0",
-    "typescript": "^5.1.6",
-    "vitest": "^0.33.0"
-  },
-  "engines": {
-    "node": ">=14.0.0"
+    "typescript": "^5.1.6"
   },
   "publishConfig": {
     "access": "public"
@@ -67,5 +50,14 @@
     "overrides": {
       "ts-node": "npm:@dreamofice/ts-node@^10.9.2"
     }
-  }
+  },
+  "release-it": {
+    "git": {
+      "requireCleanWorkingDir": false
+    },
+    "npm": {
+      "publish": false
+    }
+  },
+  "packageManager": "pnpm@8.6.12"
 }

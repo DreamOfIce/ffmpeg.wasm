@@ -1,7 +1,7 @@
 import { fileTypeFromBuffer } from "file-type";
 import { expect, test } from "vitest";
-import type { FFmpeg } from "../../src";
-import type { FFmpegFlags } from "../../src/types";
+import type { FFmpeg } from "../../packages/main/src";
+import type { FFmpegFlags } from "../../packages/main/src";
 
 export interface FFmpegTestCase {
   name: string;

@@ -1,0 +1,45 @@
+{
+  "name": "@ffmpeg.wasm/main",
+  "version": "0.13.1",
+  "description": "WebAssembly version of FFmpeg",
+  "keywords": [
+    "ffmpeg",
+    "WebAssembly",
+    "video"
+  ],
+  "homepage": "https://github.com/FFmpeg-wasm/FFmpeg.wasm#readme",
+  "bugs": {
+    "url": "https://github.com/FFmpeg-wasm/FFmpeg.wasm/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FFmpeg-wasm/FFmpeg.wasm.git"
+  },
+  "license": "MIT",
+  "author": "Jerome Wu <jeromewus@gmail.com>",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "release": "dotenv -e ../../.env release-it"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.4",
+    "@ffmpeg.wasm/core-mt": "workspace:*",
+    "@ffmpeg.wasm/core-st": "workspace:*",
+    "tsup": "^7.1.0"
+  },
+  "release-it": {
+    "git": false
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
