@@ -8,8 +8,8 @@
 
 ## About this fork
 
-Thanks to [Jerome Wu](https://github.com/jeromewu) for creating the very cool package ffmpegwasm!
-~~However, because this package hasn't been updated in a long time, a lot of features are on hold and it's not compatible with node18 and above (because the emsdk version is too old). So I decided to maintain a fork, fix the problems and continue development iterations.~~
+Thanks to [Jerome Wu](https://github.com/jeromewu) for creating the very cool package ffmpegwasm!  
+~~However, because this package hasn't been updated in a long time, a lot of features are on hold and it's not compatible with node18 and above (because the emsdk version is too old). So I decided to maintain a fork, fix the problems and continue development iterations.~~  
 Update: Jerome Wu updated ffmpegwasm, but dropped nodejs support because "If you are not in browser, there are a lot of better choices than using WebAssembly for a better performance ". However, I don't entirely agree with this. WebAssembly gives us the possibility of run programs at high performance in both native and browser environments with the same code. The convenience and portability it brings is unmatched by any other solution, and the current performance issues will hopefully be resolved in the foreseeable future. So I decide to keep maintaining this project.
 Feel free to create issues or pull requests ヾ(≧▽≦\*)o
 
@@ -39,13 +39,13 @@ Feel free to create issues or pull requests ヾ(≧▽≦\*)o
 - [x] Rewrite with TypeScript
 - [x] Support for parallel tasks in multi-threaded mode
 - [x] Migrate to monorepo
+- [ ] Build with [xmake](https://xmake.io/)(WIP)
+- [ ] Support build cache(WIP)
+- [ ] Upgrade to FFmpeg@6(WIP)
+- [ ] Use the faster `libsvtav1` instead of `libaom` (currently disabled because it is too slow)(WIP)
 - [ ] Document site
-- [ ] Build with [xmake](https://xmake.io/)
-- [ ] Support build cache
 - [ ] Benchmark
 - [ ] SIMD and WASI version
-- [ ] Upgrade to FFmpeg@6
-- [ ] Use the faster `libsvtav1` instead of `libaom` (currently disabled because it is too slow)
 
 ## Original readme
 
